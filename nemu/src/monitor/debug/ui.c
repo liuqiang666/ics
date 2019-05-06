@@ -102,7 +102,7 @@ static int cmd_info(char *args) {
     printf("usage:info r/w\n");
   }
   else if(strcmp(arg, "r") == 0) {
-   /* printf("eax:%d\n", cpu.eax);
+    printf("eax:%d\n", cpu.eax);
     printf("ecx:%d\n", cpu.ecx);
     printf("edx:%d\n", cpu.edx);
     printf("ebx:%d\n", cpu.ebx);
@@ -110,7 +110,7 @@ static int cmd_info(char *args) {
     printf("ebp:%d\n", cpu.ebp);
     printf("esi:%d\n", cpu.esi);
     printf("edi:%d\n", cpu.edi);
-    printf("eip:%#X\n", cpu.eip);*/
+    printf("eip:%#X\n", cpu.eip);
 	int i;
 	for(i = R_EAX; i<= R_EDI; i++) {
 	  printf("%s: %d\n",reg_name(i, 4),reg_l(i));
