@@ -54,7 +54,7 @@ static struct {
 
   /* TODO: Add more commands */
   {"si", "Suspend execution after n instructions are executed step by step, default n = 1", cmd_si},
-  {"info", "r: Print registers status\nw: Print watchpoints status", cmd_info},
+  {"info", "r: Print registers status w: Print watchpoints status", cmd_info},
   {"x", "Scan memory from the specified address", cmd_x},
 };
 
@@ -100,7 +100,7 @@ static int cmd_info(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   if(arg == NULL) {
-    printf("usage:info r/w\n");
+    printf("useage:info r/w\n");
   }
   else if(strcmp(arg, "r") == 0) {
    /* printf("eax:%d\n", cpu.eax);
@@ -125,13 +125,13 @@ static int cmd_x(char *args) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   if(arg == NULL) {
-    printf("usage:x N EXPR\n");
+    printf("useage:x N EXPR\n");
 	return 0;
   }
   int n = atoi(arg);
   arg = strtok(NULL, " ");
   if(arg == NULL) {
-    printf("usage:x N EXPR\n");
+    printf("useage:x N EXPR\n");
 	return 0;
   }
   vaddr_t addr = strtoul(arg, NULL, 16);
