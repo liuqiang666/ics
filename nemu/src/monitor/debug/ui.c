@@ -41,6 +41,7 @@ static int cmd_help(char *args);
 //pa1-1
 static int cmd_si(char *args);
 static int cmd_info(char *args);
+static int cmd_x(char *args);
 
 static struct {
   char *name;
@@ -54,7 +55,7 @@ static struct {
   /* TODO: Add more commands */
   {"si", "Suspend execution after n instructions are executed step by step, default n = 1", cmd_si},
   {"info", "r: Print registers status\nw: Print watchpoints status", cmd_info},
-
+  {"x", "Scan memory from the specified address", cmd_x},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -102,7 +103,7 @@ static int cmd_info(char *args) {
     printf("usage:info r/w\n");
   }
   else if(strcmp(arg, "r") == 0) {
-    printf("eax:%d\n", cpu.eax);
+   /* printf("eax:%d\n", cpu.eax);
     printf("ecx:%d\n", cpu.ecx);
     printf("edx:%d\n", cpu.edx);
     printf("ebx:%d\n", cpu.ebx);
@@ -110,7 +111,7 @@ static int cmd_info(char *args) {
     printf("ebp:%d\n", cpu.ebp);
     printf("esi:%d\n", cpu.esi);
     printf("edi:%d\n", cpu.edi);
-    printf("eip:%#X\n", cpu.eip);
+    printf("eip:%#X\n", cpu.eip);*/
 	int i;
 	for(i = R_EAX; i<= R_EDI; i++) {
 	  printf("%s: %d\n",reg_name(i, 4),reg_l(i));
@@ -120,6 +121,23 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL) {
+    printf("usage:x N EXPR\n");
+	return 0;
+  }
+  int n = atoi(arg);
+  arg = strtok(NULL, " ");
+  vaddr_t addr = strtoul(arg, NULL, 16);
+  int i;
+  for(i = 0;i < n; i++){
+	printf("%#X: %#X", addr, vaddr_read(addr, 1));
+	addr ++;
+  }
+  return 0;
+}
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
     cmd_c(NULL);
