@@ -40,6 +40,7 @@ static int cmd_help(char *args);
 
 //pa1-1
 static int cmd_si(char *args);
+static int cmd_info(char *args);
 
 static struct {
   char *name;
@@ -51,7 +52,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-  {"si", "Suspend execution after n instructions are executed step by step, default n=1", cmd_si},
+  {"si", "Suspend execution after n instructions are executed step by step, default n = 1", cmd_si},
+  {"info", "r: Print registers status\nw: Print watchpoints status", cmd_info},
 
 };
 
@@ -89,6 +91,18 @@ static int cmd_si(char *args) {
   }
   else {
     cpu_exec(strtoull(arg, NULL, 10));
+  }
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL) {
+    printf("usage:info r/w\n");
+  }
+  else if(strcmp(arg, "r") == 0) {
+    printf("eax:%d\n", cpu.eax);
   }
   return 0;
 }
