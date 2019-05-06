@@ -110,7 +110,11 @@ static int cmd_info(char *args) {
     printf("ebp:%d\n", cpu.ebp);
     printf("esi:%d\n", cpu.esi);
     printf("edi:%d\n", cpu.edi);
-    printf("eip:%d\n", cpu.eip);
+    printf("eip:%#X\n", cpu.eip);
+	int i;
+	for(i = R_EAX; i<= R_EDI; i++) {
+	  printf("%s: %d\n",reg_name(i, 4),reg_l(i));
+	}	
   }
   return 0;
 }
