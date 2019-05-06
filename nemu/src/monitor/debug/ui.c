@@ -130,10 +130,14 @@ static int cmd_x(char *args) {
   }
   int n = atoi(arg);
   arg = strtok(NULL, " ");
+  if(arg == NULL) {
+    printf("usage:x N EXPR\n");
+	return 0;
+  }
   vaddr_t addr = strtoul(arg, NULL, 16);
   int i;
   for(i = 0;i < n; i++){
-	printf("%#X: %#X", addr, vaddr_read(addr, 1));
+	printf("%#X: %#X\n", addr, vaddr_read(addr, 1));
 	addr ++;
   }
   return 0;
