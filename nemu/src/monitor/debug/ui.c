@@ -38,6 +38,9 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+//pa1-1
+static int cmd_si(char *args);
+
 static struct {
   char *name;
   char *description;
@@ -48,6 +51,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
+  {"si", "Suspend execution after n instructions are executed step by step, default n=1", cmd_si},
 
 };
 
@@ -72,6 +76,19 @@ static int cmd_help(char *args) {
       }
     }
     printf("Unknown command '%s'\n", arg);
+  }
+  return 0;
+}
+
+
+static int cmd_si(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL) {
+     cpu_exec(1);	
+  }
+  else {
+    cpu_exec(strtoull(arg, NULL, 10));
   }
   return 0;
 }
