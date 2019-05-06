@@ -103,6 +103,14 @@ static int cmd_info(char *args) {
   }
   else if(strcmp(arg, "r") == 0) {
     printf("eax:%d\n", cpu.eax);
+    printf("ecx:%d\n", cpu.ecx);
+    printf("edx:%d\n", cpu.edx);
+    printf("ebx:%d\n", cpu.ebx);
+    printf("esp:%d\n", cpu.esp);
+    printf("ebp:%d\n", cpu.ebp);
+    printf("esi:%d\n", cpu.esi);
+    printf("edi:%d\n", cpu.edi);
+    printf("eip:%d\n", cpu.eip);
   }
   return 0;
 }
