@@ -137,7 +137,7 @@ static int cmd_x(char *args) {
   vaddr_t addr = strtoul(arg, NULL, 16);
   int i;
   for(i = 0;i < n; i++){
-	printf("%#02X ", vaddr_read(addr, 1));
+	printf("0x%02X ", vaddr_read(addr, 1));
 	addr ++;
   }
   printf("\n");
