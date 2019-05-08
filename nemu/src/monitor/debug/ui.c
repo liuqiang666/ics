@@ -42,6 +42,8 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
+//expr
+static int cmd_p(char *args);
 
 static struct {
   char *name;
@@ -56,6 +58,7 @@ static struct {
   {"si", "Suspend execution after n instructions are executed step by step, default n = 1", cmd_si},
   {"info", "r: Print registers status w: Print watchpoints status", cmd_info},
   {"x", "Scan memory from the specified address", cmd_x},
+  {"p", "Expression evaluation", cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -143,6 +146,23 @@ static int cmd_x(char *args) {
   printf("\n");
   return 0;
 }
+
+static int cmd_p(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL) {
+    printf("useage:p EXPR\n");
+    return 0;
+  }
+  bool success;
+  uint32_t res = expr(arg, &success);
+  if(success)
+	printf("%d\n", res);
+  else 
+	printf("Expression evaluation failed");
+  return 0;		   	
+}
+
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
     cmd_c(NULL);
