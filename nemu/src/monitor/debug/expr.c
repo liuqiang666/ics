@@ -211,7 +211,13 @@ static uint32_t eval(int p, int q, bool *success) {
 	  case '+': return val1 + val2;
 	  case '-': return val1 - val2;
 	  case '*': return val1 * val2;
-	  case '/': return val1 / val2;
+	  case '/': 
+		if(val2 == 0){
+		  *success = false;
+		  printf("/0 invalid exprssion.\n");
+		  return 0;
+		}
+		return val1 / val2;
 	  default: assert(0);
 	}
   }
