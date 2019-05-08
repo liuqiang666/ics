@@ -149,7 +149,7 @@ static inline bool is_op(int p) {
   return false;
 }
 
-static int op_priority(Token t) {
+static uint32_t op_priority(Token t) {
   int p;
   switch(t.type) {
 	case '+':
@@ -183,7 +183,8 @@ static int main_op_position(int p, int q) {
 
 static uint32_t eval(int p, int q) {
   if(p > q) {
-	printf("Bad expression");
+	printf("Bad expression\n");
+
 	assert(0);
   }
   else if (p == q) {
@@ -214,6 +215,14 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  *success = true;
-  return eval(0, nr_token-1);
+  bool eval_success=true;
+  uint32_t res = eval(0, nr_token-1);
+  if(eval_success) {
+    *success = true;
+	return res;
+  }
+  else {
+    *success = false;
+    return 0;
+  }
 }
