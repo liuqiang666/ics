@@ -198,7 +198,7 @@ static uint32_t eval(int p, int q, bool *success) {
     printf("main op posi: %d\n", op);
 	uint32_t val1 = eval(p, op-1, success);
 	uint32_t val2 = eval(op+1, q, success);
-
+	printf("val1:%d val2:%d\n", val1, val2);
 	switch (tokens[op].type) {
 	  case '+': return val1 + val2;break;
 	  case '-': return val1 - val2;break;
