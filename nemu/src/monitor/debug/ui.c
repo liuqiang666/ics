@@ -149,7 +149,7 @@ static int cmd_x(char *args) {
 
 static int cmd_p(char *args) {
   /* extract the first argument */
-  char *arg = strtok(NULL, " ");
+  char *arg = strtok(NULL, "");
   if(arg == NULL) {
     printf("useage:p EXPR\n");
     return 0;
