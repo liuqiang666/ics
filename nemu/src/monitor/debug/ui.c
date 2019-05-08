@@ -159,7 +159,7 @@ static int cmd_p(char *args) {
   if(success)
 	printf("%d\n", res);
   else 
-	printf("Expression evaluation failed\n");
+	printf("Bad expression\n");
   return 0;		   	
 }
 

@@ -183,30 +183,30 @@ static int main_op_position(int p, int q) {
 
 static uint32_t eval(int p, int q, bool *success) {
   if(p > q) {
-	printf("Bad expression\n");
     *success = false;
 	return 0;
   }
   else if (p == q) {
-	if(tokens[p].type == NUM)
+	if(tokens[p].type == NUM){
 	  *success = true;
-	else 
+	  return strtoul(tokens[p].str, NULL, 10);
+	}
+	else {
 	  *success = false;
-	return strtoul(tokens[p].str, NULL, 10);
+      return 0;	
+	}
   }
   else if (check_parentheses(p,q)) {
 	return eval(p+1, q-1, success);
   }
   else {
 	int op = main_op_position(p, q);
-    printf("main op posi: %d\n", op);
 	uint32_t val1 = eval(p, op-1, success);
     if(!(*success))
 	  return 0;
 	uint32_t val2 = eval(op+1, q, success);
     if(!(*success))
 	  return 0;
-	printf("val1:%d val2:%d\n", val1, val2);
 	switch (tokens[op].type) {
 	  case '+': return val1 + val2;
 	  case '-': return val1 - val2;
