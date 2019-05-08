@@ -195,6 +195,7 @@ static uint32_t eval(int p, int q, bool *success) {
   }
   else {
 	int op = main_op_position(p, q);
+    printf("main op posi: %d\n", op);
 	uint32_t val1 = eval(p, op-1, success);
 	uint32_t val2 = eval(op+1, q, success);
 
