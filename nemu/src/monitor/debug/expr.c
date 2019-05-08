@@ -181,22 +181,22 @@ static int main_op_position(int p, int q) {
   return poistion;
 }
 
-static uint32_t eval(int p, int q) {
+static uint32_t eval(int p, int q, bool *success) {
   if(p > q) {
 	printf("Bad expression\n");
-
-	assert(0);
+    *success = false;
+	return 0;
   }
   else if (p == q) {
 	return strtoul(tokens[p].str, NULL, 10);
   }
   else if (check_parentheses(p,q)) {
-	return eval(p+1, q-1);
+	return eval(p+1, q-1, success);
   }
   else {
 	int op = main_op_position(p, q);
-	uint32_t val1 = eval(p, op-1);
-	uint32_t val2 = eval(op+1, q);
+	uint32_t val1 = eval(p, op-1, success);
+	uint32_t val2 = eval(op+1, q, success);
 
 	switch (tokens[op].type) {
 	  case '+': return val1 + val2;break;
@@ -215,14 +215,5 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  bool eval_success=true;
-  uint32_t res = eval(0, nr_token-1);
-  if(eval_success) {
-    *success = true;
-	return res;
-  }
-  else {
-    *success = false;
-    return 0;
-  }
+  return eval(0, nr_token-1, success);
 }
