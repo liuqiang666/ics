@@ -173,7 +173,7 @@ static int main_op_position(int p, int q) {
 	  }
 	} 
     else if(tokens[i].type == '(') {
-	  while(tokens[i].type != ')') {
+	  while(tokens[i].type != ')' && i < q) {
 	    i ++;
       }
 	}
