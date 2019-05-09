@@ -217,7 +217,6 @@ static uint32_t eval(int p, int q, bool *success) {
 	  case HEXNUM:
 	    return strtoul(tokens[p].str, NULL, 0);
 	  case REG:
-	    printf("input reg name: %s\n", input_name);
 	    if(strcmp("eip", input_name) == 0){
 		  return cpu.eip;
 	    }
