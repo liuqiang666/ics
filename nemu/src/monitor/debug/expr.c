@@ -107,6 +107,8 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_NOTYPE: break;
+		  case HEXNUM:
+		  case REG:
 		  case NUM:
 			/*
 			if(substr_len >= 32)
@@ -212,11 +214,11 @@ static uint32_t eval(int p, int q, bool *success) {
 	  return strtoul(tokens[p].str, NULL, 0);
 	} 
 	else if (tokens[p].type == REG) {
-	  char input_name[4];
+	  char *input_name = &tokens[p].str[1];
 	  int i = 1;
-	  while(tokens[p].str[i] != '\0')
+	 /* while(tokens[p].str[i] != '\0')
 		input_name[i-1] = tokens[p].str[i];
-	  input_name[i-1] = '\0';
+	  input_name[i-1] = '\0';*/
 	  printf("input reg name: %s", input_name);
 	  if(strcmp("eip", input_name) == 0)
 		return cpu.eip;
