@@ -38,8 +38,8 @@ void free_wp(int n) {
 	return;
   WP *wp = NULL;
   if(head->NO == n){
-    head = head->next;
 	wp = head;
+    head = head->next;
   }
   WP *pre = head, *p = head->next;
   while(p != NULL){
