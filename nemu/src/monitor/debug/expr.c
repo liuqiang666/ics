@@ -160,7 +160,7 @@ static bool check_parentheses(int p, int q) {
 }
 
 static inline bool is_op(int p) {
-  if(tokens[p].type == '+' || tokens[p].type == '-' || tokens[p].type == '*' || tokens[p].type == '/' || tokens[p].type == TK_EQ || tokens[p].type == TK_NEQ || tokens[p].type == TK_AND || tokens[p].type == DEREF)
+  if(tokens[p].type == '+' || tokens[p].type == '-' || tokens[p].type == '*' || tokens[p].type == '/' || tokens[p].type == TK_EQ || tokens[p].type == TK_NEQ || tokens[p].type == TK_AND || tokens[p].type == TK_OR || tokens[p].type == TK_NOT  || tokens[p].type == DEREF)
 	return true;
   return false;
 }
