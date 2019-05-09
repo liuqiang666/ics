@@ -33,23 +33,30 @@ WP* new_wp(){
   return wp;
 }
 
-void free_wp(WP *wp) {
-  wp->next = free_;
-  free_ = wp;
+void free_wp(int n) {
   if(head == NULL)
 	return;
-  if(head->NO == wp->NO){
+  WP *wp = NULL;
+  if(head->NO == n){
     head = head->next;
+	wp = head;
   }
   WP *pre = head, *p = head->next;
   while(p != NULL){
-    if(wp->NO == p->NO) {
+    if(p->NO == n) {
+	  wp = p;
 	  pre->next = p-> next;
 	  break;
 	}
 	pre = p;
 	p = p->next;
   }
+  if(wp == NULL){
+    printf("watchpoint %d not existed.\n", n);
+	return;
+  } 
+  wp->next = free_;
+  free_ = wp;
 }
 
 bool check_watchpoints() {
