@@ -46,8 +46,8 @@ static struct rule {
   {"\\-", '-'},       // sub
   {"\\*", '*'},       // multi deref
   {"\\/", '/'},       // divide
-  {"[1-9][0-9]*", NUM},    // number
   {"^0[xX][0-9a-fA-F]+", HEXNUM},    // hex number
+  {"[0-9]+", NUM},    // number
   {"^\\$[eE][a-zA-Z]{2}", REG},    // reg name
   {"\\(", '('},       // left parentheses
   {"\\)", ')'},       // right parentheses
