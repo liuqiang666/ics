@@ -10,7 +10,7 @@ typedef struct watchpoint {
   /* TODO: Add more members if necessary */
   char expr[65536];
   uint32_t result;
-
+  bool status; //available?
 } WP;
 
 #endif

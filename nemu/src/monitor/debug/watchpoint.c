@@ -11,6 +11,7 @@ void init_wp_pool() {
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
     wp_pool[i].next = &wp_pool[i + 1];
+	wp_pool[i].status = true;
   }
   wp_pool[NR_WP - 1].next = NULL;
 
@@ -59,7 +60,9 @@ bool check_watchpoints() {
     uint32_t res = expr(p->expr, &success);
     if(!success) {
       hit = true;
+	  p->status = false;
       printf("Expression evalution failed at watchpoint %d: %s\n", p->NO, p->expr);
+	  p = p->next;
       continue;
     }
     if(res != p->result) {
@@ -74,3 +77,12 @@ bool check_watchpoints() {
   return hit;
 }
 
+void watchpoints_info() {
+  WP *p = head;
+  if(head != NULL)
+    printf("NO\tEXPR\t\tSTATUS\tVALUE\n");
+  while(p != NULL) {
+    printf("%d\t%s\t\t%d\t%d\n", p->NO, p->expr, p->status, p->result);
+	p = p->next;	
+  } 
+}
