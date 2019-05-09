@@ -50,3 +50,27 @@ void free_wp(WP *wp) {
 	p = p->next;
   }
 }
+
+bool check_watchpoints() {
+  WP *p = head;
+  bool success;
+  bool hit = false;
+  while(p != NULL) {
+    uint32_t res = expr(p->expr, &success);
+    if(!success) {
+      hit = true;
+      printf("Expression evalution failed at watchpoint %d: %s\n", p->NO, p->expr);
+      continue;
+    }
+    if(res != p->result) {
+      hit = true;
+      printf("watchpoint %d: %s\n", p->NO, p->expr);
+      printf("old value: %d\n", p->result);
+      printf("new value: %d\n", res);
+      p->result = res;
+    }
+    p = p->next;
+  }
+  return hit;
+}
+

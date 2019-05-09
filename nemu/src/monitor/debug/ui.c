@@ -8,6 +8,8 @@
 #include <readline/history.h>
 
 void cpu_exec(uint64_t);
+WP* new_wp();
+void free_wp(WP *wp);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -44,6 +46,8 @@ static int cmd_info(char *args);
 static int cmd_x(char *args);
 //expr
 static int cmd_p(char *args);
+//watchpoint
+static int cmd_w(char *args);
 
 static struct {
   char *name;
@@ -56,9 +60,10 @@ static struct {
 
   /* TODO: Add more commands */
   {"si", "Suspend execution after n instructions are executed step by step, default n = 1", cmd_si},
-  {"info", "r: Print registers status w: Print watchpoints status", cmd_info},
+  {"info", "r: Print registers status  w: Print watchpoints status", cmd_info},
   {"x", "Scan memory from the specified address", cmd_x},
   {"p", "Expression evaluation", cmd_p},
+  {"w", "Suspend programm execution when the value of the expression changes.", cmd_w},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -160,6 +165,30 @@ static int cmd_p(char *args) {
 	printf("%d\n", res);
   else 
 	printf("Bad expression\n");
+  return 0;		   	
+}
+
+static int cmd_w(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, "");
+  if(arg == NULL) {
+    printf("useage:w EXPR\n");
+    return 0;
+  }
+  bool success;
+  uint32_t res = expr(arg, &success);
+  if(!success) {
+	printf("Bad expression\n");
+	return 0;	
+  }
+  WP *wp = new_wp();
+  wp->result = res;
+  int i = 0;
+  while(arg[i] != '\0') {
+	wp->expr[i] = arg[i];
+	i ++;
+  }
+  wp->expr[i] = '\0';
   return 0;		   	
 }
 

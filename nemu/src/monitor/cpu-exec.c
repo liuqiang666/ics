@@ -11,6 +11,7 @@
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
+bool check_watchpoints();
 
 static uint64_t g_nr_guest_instr = 0;
 
@@ -40,6 +41,8 @@ void cpu_exec(uint64_t n) {
 
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
+	if(check_watchpoints())
+		return;
 
 #endif
 
