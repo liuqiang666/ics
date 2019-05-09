@@ -118,6 +118,7 @@ static bool make_token(char *e) {
 			for(int i = 0;i < substr_len;i++) {
 			  tokens[nr_token].str[i] = substr_start[i];
 			}
+			tokens[nr_token].str[substr_len] = '\0';
           default: 
 			tokens[nr_token].type = rules[i].token_type;
 			nr_token ++;
