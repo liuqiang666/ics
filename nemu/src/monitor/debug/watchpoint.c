@@ -52,7 +52,7 @@ void free_wp(int n) {
 	p = p->next;
   }
   if(wp == NULL){
-    printf("watchpoint %d not existed.\n", n);
+    printf("watchpoint %d does not exist.\n", n);
 	return;
   } 
   wp->next = free_;
