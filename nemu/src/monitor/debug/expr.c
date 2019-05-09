@@ -17,7 +17,14 @@ enum {
   TK_DIVIDE = '/',
   TK_LP = '(',
   TK_RP = ')', 
-  NUM
+  NUM = 258,
+  HEXNUM,
+  REG,
+  TK_NEQ,
+  TK_AND,
+  TK_OR,
+  TK_NOT,
+  DEREF
 };
 
 static struct rule {
@@ -32,10 +39,16 @@ static struct rule {
   {" +", TK_NOTYPE},  // spaces
   {"\\+", '+'},       // plus
   {"==", TK_EQ},      // equal
+  {"!=", TK_NEQ},     // not equal
+  {"&&", TK_AND},     // and
+  {"\\|\\|", TK_OR},  // or
+  {"!", TK_NOT},      // not
   {"\\-", '-'},       // sub
-  {"\\*", '*'},       // multi
+  {"\\*", '*'},       // multi deref
   {"\\/", '/'},       // divide
   {"[0-9]+", NUM},    // number
+  {"^\\0[xX][0-9a-fA-F]+$", HEXNUM},    // hex number
+  {"^\\$[eE][a-zA-Z]{2}$", REG},    // reg name
   {"\\(", '('},       // left parentheses
   {"\\)", ')'},       // right parentheses
 };
@@ -144,7 +157,7 @@ static bool check_parentheses(int p, int q) {
 }
 
 static inline bool is_op(int p) {
-  if(tokens[p].type == '+' || tokens[p].type == '-' || tokens[p].type == '*' || tokens[p].type == '/')
+  if(tokens[p].type == '+' || tokens[p].type == '-' || tokens[p].type == '*' || tokens[p].type == '/' || tokens[p].type == TK_EQ || tokens[p].type == TK_NEQ || tokens[p].type == TK_AND || tokens[p].type == DEREF)
 	return true;
   return false;
 }
@@ -152,10 +165,16 @@ static inline bool is_op(int p) {
 static uint32_t op_priority(Token t) {
   int p;
   switch(t.type) {
+	case TK_OR:
+	case TK_AND: p = 0;break;
+	case TK_EQ:
+	case TK_NEQ: p = 1;break;
 	case '+':
-	case '-':p=0;break;
+	case '-': p = 2;break;
 	case '*':
-	case '/':p=1;break;
+	case '/': p = 3;break;
+	case DEREF:
+	case TK_NOT: p = 4;break;
 	default: p = -1;
   }
   return p;
@@ -187,9 +206,23 @@ static uint32_t eval(int p, int q, bool *success) {
 	return 0;
   }
   else if (p == q) {
-	if(tokens[p].type == NUM){
+	if(tokens[p].type == NUM || tokens[p].type == HEXNUM){
 	  *success = true;
-	  return strtoul(tokens[p].str, NULL, 10);
+	  return strtoul(tokens[p].str, NULL, 0);
+	} 
+	else if (tokens[p].type == REG) {
+	  char *input_name = &tokens[p].str[1];
+	  if(strcmp("eip", input_name) == 0)
+		return cpu.eip;
+	  for(int i = 0;i < 8; i++) {
+	    if(strcmp(input_name, reg_name(i, 4)) == 0) {
+		  *success = true;
+		  return reg_l(i);
+		}
+	  }
+	  printf("Invalid reg name: %s\n", tokens[p].str);
+	  *success = false;
+	  return 0;
 	}
 	else {
 	  *success = false;
@@ -197,27 +230,42 @@ static uint32_t eval(int p, int q, bool *success) {
 	}
   }
   else if (check_parentheses(p,q)) {
-	return eval(p+1, q-1, success);
+	return eval(p + 1, q - 1, success);
   }
   else {
 	int op = main_op_position(p, q);
-	uint32_t val1 = eval(p, op-1, success);
-    if(!(*success))
-	  return 0;
+	uint32_t val1 = 0;
+	if(tokens[op].type != DEREF && tokens[op].type != TK_NOT) {
+	  val1 = eval(p, op-1, success);
+      if(!(*success))
+	    return 0;
+	}
 	uint32_t val2 = eval(op+1, q, success);
     if(!(*success))
 	  return 0;
 	switch (tokens[op].type) {
 	  case '+': return val1 + val2;
-	  case '-': return val1 - val2;
+	  case '-': 
+		if(val1 < val2) {
+		  printf("Result is a signed number, less than zero.\n");
+		  *success = false;
+ 		  return 0;
+		}
+		return val1 - val2;
 	  case '*': return val1 * val2;
 	  case '/': 
 		if(val2 == 0){
 		  *success = false;
-		  printf("/0 invalid exprssion.\n");
+		  printf("Division by zero.\n");
 		  return 0;
 		}
 		return val1 / val2;
+	  case TK_EQ: return (val1 == val2);
+	  case TK_NEQ: return (val1 != val2);
+	  case TK_AND: return (val1 && val2);
+      case TK_OR: return (val1 || val2);
+	  case TK_NOT: return (!val2);
+	  case DEREF: return vaddr_read(val2, 4);
 	  default: assert(0);
 	}
   }
@@ -230,5 +278,9 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  for(int i = 0; i < nr_token; i++) {
+	if(tokens[i].type == '*' && (i == 0 || is_op(i - 1))) 
+	  tokens[i].type = DEREF;
+  }
   return eval(0, nr_token-1, success);
 }
