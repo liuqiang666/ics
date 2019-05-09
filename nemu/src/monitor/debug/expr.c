@@ -209,34 +209,27 @@ static uint32_t eval(int p, int q, bool *success) {
 	return 0;
   }
   else if (p == q) {
-	if(tokens[p].type == NUM || tokens[p].type == HEXNUM){
-	  *success = true;
-	  return strtoul(tokens[p].str, NULL, 0);
-	} 
-	else if (tokens[p].type == REG) {
-	  char *input_name = &tokens[p].str[1];
-	  int i = 1;
-	 /* while(tokens[p].str[i] != '\0')
-		input_name[i-1] = tokens[p].str[i];
-	  input_name[i-1] = '\0';*/
-	  printf("input reg name: %s", input_name);
-	  if(strcmp("eip", input_name) == 0){
-		*success = true;
-		return cpu.eip;
-	  }
-	  for(i = 0;i < 8; i++) {
-	    if(strcmp(input_name, reg_name(i, 4)) == 0) {
-		  *success = true;
-		  return reg_l(i);
-		}
-	  }
-	  printf("Invalid reg name: %s\n", tokens[p].str);
-	  *success = false;
-	  return 0;
-	}
-	else {
-	  *success = false;
-      return 0;	
+	*success = true;
+	char *input_name = &tokens[p].str[1];
+	int i = 1;
+	switch(tokens[p].type) {
+	  case NUM:
+	  case HEXNUM:
+	    return strtoul(tokens[p].str, NULL, 0);
+	  case REG:
+	    printf("input reg name: %s\n", input_name);
+	    if(strcmp("eip", input_name) == 0){
+		  return cpu.eip;
+	    }
+	    for(i = 0;i < 8; i++) {
+	      if(strcmp(input_name, reg_name(i, 4)) == 0) {
+		    return reg_l(i);
+		  }  
+	    }
+	    printf("Invalid reg name: %s\n", tokens[p].str);
+	  default:
+	    *success = false;
+        return 0;	
 	}
   }
   else if (check_parentheses(p,q)) {
