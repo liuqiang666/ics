@@ -41,15 +41,17 @@ void free_wp(int n) {
 	wp = head;
     head = head->next;
   }
-  WP *pre = head, *p = head->next;
-  while(p != NULL){
-    if(p->NO == n) {
-	  wp = p;
-	  pre->next = p-> next;
-	  break;
-	}
-	pre = p;
-	p = p->next;
+  else {
+    WP *pre = head, *p = head->next;
+    while(p != NULL){
+      if(p->NO == n) {
+	    wp = p;
+	    pre->next = p-> next;
+	    break;
+	  }
+	  pre = p;
+	  p = p->next;
+    }
   }
   if(wp == NULL){
     printf("watchpoint %d does not exist.\n", n);
