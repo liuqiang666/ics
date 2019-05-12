@@ -87,11 +87,15 @@ bool check_watchpoints() {
 }
 
 void watchpoints_info() {
-  WP *p = head;
   if(head != NULL)
     printf("NO\tEXPR\t\tSTATUS\tVALUE\n");
+  else {
+	printf("No watchpoint.\n"); 
+	return;
+  } 
+  WP *p = head;
   while(p != NULL) {
     printf("%d\t%s\t\t%d\t%d\n", p->NO, p->expr, p->status, p->result);
 	p = p->next;	
-  } 
+  }
 }
