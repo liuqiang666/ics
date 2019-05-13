@@ -77,8 +77,8 @@ bool check_watchpoints() {
     if(res != p->result) {
       hit = true;
       printf("watchpoint %d: %s\n", p->NO, p->expr);
-      printf("old value: %d\n", p->result);
-      printf("new value: %d\n", res);
+      printf("old value: 0x%#x\n", p->result);
+      printf("new value: 0x%#x\n", res);
       p->result = res;
     }
     p = p->next;
@@ -95,7 +95,7 @@ void watchpoints_info() {
   } 
   WP *p = head;
   while(p != NULL) {
-    printf("%d\t%s\t\t%d\t%d\n", p->NO, p->expr, p->status, p->result);
+    printf("%d\t%s\t\t%d\t0x%#x\n", p->NO, p->expr, p->status, p->result);
 	p = p->next;	
   }
 }
