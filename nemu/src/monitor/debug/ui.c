@@ -125,9 +125,9 @@ static int cmd_info(char *args) {
     printf("eip:%#X\n", cpu.eip);*/
 	int i;
 	for(i = R_EAX; i<= R_EDI; i++) {
-	  printf("%s: %d\n",reg_name(i, 4),reg_l(i));
+	  printf("%s: 0x%x\n",reg_name(i, 4),reg_l(i));
 	}
-	printf("eip: %#X\n", cpu.eip);
+	printf("eip: 0x%x\n", cpu.eip);
   } 
   else if(strcmp(arg, "w") == 0) {
   	watchpoints_info();	
