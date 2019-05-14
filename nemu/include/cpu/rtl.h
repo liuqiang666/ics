@@ -155,7 +155,7 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  rtlreg_t tmp = (*src1) & (~0u >> ((4 - width) << 3));
+  uint32_t tmp = (*src1) & (~0u >> ((4 - width) << 3));
   switch(width) {
 	case 4: *dest = (uint32_t)tmp;break;
 	case 2: *dest = (uint32_t)(int16_t)tmp;break;
@@ -166,7 +166,6 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
-  printf("esp:%x", cpu.esp);
   rtl_subi(&cpu.esp, &cpu.esp, 4);
   // M[esp] <- src1
   rtl_sm(&cpu.esp, src1, 4);
@@ -182,12 +181,12 @@ static inline void rtl_pop(rtlreg_t* dest) {
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, int imm) {
   // dest <- (src1 relop imm ? 1 : 0)
-  TODO();
+  *dest = interpret_relop(relop, *src1, imm);
 }
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- src1[width * 8 - 1]
-  TODO();
+  *dest = ((*src1) & (1 << ((width << 3) - 1))) == 0;
 }
 
 #define make_rtl_setget_eflags(f) \
