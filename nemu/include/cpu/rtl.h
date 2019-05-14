@@ -155,19 +155,28 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  TODO();
+  rtlreg_t tmp = (*src1) & (~0u >> ((4 - width) << 3));
+  switch(width) {
+	case 4: *dest = (uint32_t)tmp;break;
+	case 2: *dest = (uint32_t)(int16_t)tmp;break;
+	case 1: *dest = (uint32_t)(int8_t)tmp;break;
+	default: assert(0);
+  }
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
+  printf("esp:%x", cpu.esp);
+  rtl_subi(&cpu.esp, &cpu.esp, 4);
   // M[esp] <- src1
-  TODO();
+  rtl_sm(&cpu.esp, src1, 4);
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
+  rtl_lm(dest, &cpu.esp, 4);
   // esp <- esp + 4
-  TODO();
+  rtl_addi(&cpu.esp, &cpu.esp, 4);
 }
 
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
