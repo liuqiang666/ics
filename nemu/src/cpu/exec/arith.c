@@ -7,10 +7,11 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) { //refer sbb
-  printf("before sub, esp: 0x%x\n", cpu.esp);
+  printf("before sub, esp: 0x%x dest: 0x%x src: 0x%x\n", cpu.esp, id_dest->val, id_src->val);
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_setrelop(RELOP_LTU, &t3, &id_dest->val, &t2);
   operand_write(id_dest, &t2);
+  printf("after sub, dest:0x%x\n", id_dest->val);
   rtl_update_ZFSF(&t2, id_dest->width);
 
   rtl_setrelop(RELOP_LTU, &t0, &id_dest->val, &t2);
