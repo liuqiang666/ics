@@ -156,9 +156,9 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
   printf("before sext,width: %d, src1:0x%x\n", width,  *src1);
-  rtl_shli(&at, src1, 32 - width * 8);
-  uint32_t tmp = (~0u >> ((4-width) << 3));
-  printf("after shli,tmp:0x%x, src1:0x%x\n", tmp, at);
+ //rtl_shli(&at, src1, 32 - width * 8);
+  at = (*src1) & (~0u >> ((4-width) << 3));
+  printf("after &,, src1:0x%x\n", at);
   switch(width) {
 	case 4: *dest = (uint32_t)at;break;
 	case 2: *dest = (uint32_t)(int16_t)at;break;
@@ -210,9 +210,9 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  rtl_shli(&at, result, 32 - width * 8);
-  //cpu.ZF = ((*result) & (~0u >> ((4 - width) << 3))) == 0;
-  cpu.ZF = (at == 0);
+  //rtl_shli(&at, result, 32 - width * 8);
+  //cpu.ZF = (at == 0);
+  cpu.ZF = ((*result) & (~0u >> ((4 - width) << 3))) == 0;
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
