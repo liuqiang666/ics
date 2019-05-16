@@ -212,6 +212,7 @@ make_DHelper(SI2E) {
   if (id_dest->width == 2) {
     id_src->val &= 0xffff;
   }
+  printf("SI2E src: 0x%x\n", id_src->val);
 }
 
 make_DHelper(SI_E2G) {
