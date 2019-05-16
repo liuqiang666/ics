@@ -71,17 +71,5 @@ void difftest_step(uint32_t eip) {
 
   // TODO: Check the registers state with the reference design.
   // Set `nemu_state` to `NEMU_ABORT` if they are not the same.
-  bool is_diff = false;
-  for(int i = R_EAX; i <= R_EDI; i++) {
-	if(cpu.gpr[i]._32 != ref_r.gpr[i]._32) {
-	  printf("%s has problem DUT:0x%x REF:0x%x\n", reg_name(i, 4), cpu.gpr[i]._32, ref_r.gpr[i]._32);
-	  is_diff = true;
-	}
-  }
-  if(cpu.eip != ref_r.eip) {
-	printf("eip has problem DUT:0x%x REF:0x%x\n", cpu.eip, ref_r.eip);
-	is_diff = true;
-  }
-  if(is_diff)
-	nemu_state = NEMU_ABORT;
+  TODO();
 }
