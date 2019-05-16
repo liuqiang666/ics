@@ -74,15 +74,15 @@ void difftest_step(uint32_t eip) {
   bool is_diff = false;
   for(int i = R_EAX; i <= R_EDI; i++) {
 	if(cpu.gpr[i]._32 != ref_r.gpr[i]._32) {
-	  printf("%s has problem DUT:0x%x REF:0x%x\n", reg_name(i, 4), reg_l(i), ref_r.gpr[i]._32);
+	  printf("Diff:%s DUT:0x%x REF:0x%x\n", reg_name(i, 4), reg_l(i), ref_r.gpr[i]._32);
 	  is_diff = true;
 	}
   }
-  printf("%s has problem DUT:0x%x REF:0x%x\n", reg_name(R_ESP, 4), reg_l(R_ESP), ref_r.gpr[R_ESP]._32);
   if(cpu.eip != ref_r.eip) {
-	printf("eip has problem DUT:0x%x REF:0x%x\n", cpu.eip, ref_r.eip);
+	printf("Diff:eip DUT:0x%x REF:0x%x\n", cpu.eip, ref_r.eip);
 	is_diff = true;
   }
   if(is_diff)
 	nemu_state = NEMU_ABORT;
+
 }
