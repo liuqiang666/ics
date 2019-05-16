@@ -24,3 +24,6 @@ make_EHelper(sub);
 make_EHelper(xor);		
 make_EHelper(and);	
 
+//special.c
+make_EHelper(nop);		
+
