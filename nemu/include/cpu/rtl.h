@@ -155,13 +155,16 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
+  printf("before sext,src1:0x%x\n", *src1);
   rtl_shli(&at, src1, 32 - width * 8);
+  printf("after shili,src1:0x%x\n", at);
   switch(width) {
 	case 4: *dest = (uint32_t)at;break;
 	case 2: *dest = (uint32_t)(int16_t)at;break;
 	case 1: *dest = (uint32_t)(int8_t)at;break;
 	default: assert(0);
   }
+  printf("after sext,dest:0x%x\n", *dest);
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
