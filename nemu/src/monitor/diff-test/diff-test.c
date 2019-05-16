@@ -74,7 +74,7 @@ void difftest_step(uint32_t eip) {
   bool is_diff = false;
   for(int i = R_EAX; i <= R_EDI; i++) {
 	if(cpu.gpr[i]._32 != ref_r.gpr[i]._32) {
-	  printf("%s has problem DUT:0x%x REF:0x%x\n", reg_name(i, 4), cpu.gpr[i]._32, ref_r.gpr[i]._32);
+	  printf("%s has problem DUT:0x%x REF:0x%x\n", reg_name(i, 4), reg_l(i), ref_r.gpr[i]._32);
 	  is_diff = true;
 	}
   }
