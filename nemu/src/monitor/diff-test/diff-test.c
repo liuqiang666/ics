@@ -78,6 +78,7 @@ void difftest_step(uint32_t eip) {
 	  is_diff = true;
 	}
   }
+  printf("%s has problem DUT:0x%x REF:0x%x\n", reg_name(R_ESP, 4), reg_l(R_ESP), ref_r.gpr[R_ESP]._32);
   if(cpu.eip != ref_r.eip) {
 	printf("eip has problem DUT:0x%x REF:0x%x\n", cpu.eip, ref_r.eip);
 	is_diff = true;
