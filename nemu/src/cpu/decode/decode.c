@@ -205,6 +205,7 @@ make_DHelper(test_I) {
 }
 
 make_DHelper(SI2E) {
+  printf("before SI2E src: 0x%x\n", id_src->val);
   assert(id_dest->width == 2 || id_dest->width == 4);
   decode_op_rm(eip, id_dest, true, NULL, false);
   id_src->width = 1;
@@ -212,7 +213,7 @@ make_DHelper(SI2E) {
   if (id_dest->width == 2) {
     id_src->val &= 0xffff;
   }
-  printf("SI2E src: 0x%x\n", id_src->val);
+  printf("after SI2E src: 0x%x\n", id_src->val);
 }
 
 make_DHelper(SI_E2G) {
