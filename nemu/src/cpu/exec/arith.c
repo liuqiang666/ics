@@ -8,6 +8,8 @@ make_EHelper(add) {
 
 make_EHelper(sub) { //refer sbb
   printf("before sub, esp: 0x%x dest: 0x%x src: 0x%x\n", cpu.esp, id_dest->val, id_src->val);
+  rtl_sext(&id_src->val, &id_src->val, id_src->width);
+  printf("after sext, esp: 0x%x dest: 0x%x src: 0x%x\n", cpu.esp, id_dest->val, id_src->val);
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_setrelop(RELOP_LTU, &t3, &id_dest->val, &t2);
   operand_write(id_dest, &t2);
