@@ -7,6 +7,7 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) { //refer sbb
+  printf("before sub, esp: 0x%x\n", cpu.esp);
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_setrelop(RELOP_LTU, &t3, &id_dest->val, &t2);
   operand_write(id_dest, &t2);
@@ -22,6 +23,7 @@ make_EHelper(sub) { //refer sbb
   rtl_msb(&t0, &t0, id_dest->width);
   rtl_set_OF(&t0);
   print_asm_template2(sub);
+  printf("after sub, esp: 0x%x\n", cpu.esp);
 }
 
 make_EHelper(cmp) {
