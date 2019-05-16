@@ -155,7 +155,7 @@ static inline void rtl_not(rtlreg_t *dest, const rtlreg_t* src1) {
 
 static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  printf("before sext,src1:0x%x\n", *src1);
+  printf("before sext,width: %d, src1:0x%x\n", width,  *src1);
   rtl_shli(&at, src1, 32 - width * 8);
   printf("after shili,src1:0x%x\n", at);
   switch(width) {
