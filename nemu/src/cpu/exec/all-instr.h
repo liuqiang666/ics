@@ -5,14 +5,22 @@ make_EHelper(mov);
 make_EHelper(operand_size);
 
 make_EHelper(inv);
+
 make_EHelper(nemu_trap);
 
-make_EHelper(call);		//control.c
-make_EHelper(push);		//data-mov.c
-make_EHelper(sub);		//arith.c
-make_EHelper(xor);		//logic.c
-make_EHelper(pop);		//data-mov.c
-make_EHelper(ret);		//control.c
-make_EHelper(lea);		//data-mov.c
-make_EHelper(and);		//logic.c
+//control.c
+make_EHelper(call);		
+make_EHelper(ret);		
+
+//data-mov.c
+make_EHelper(push);	
+make_EHelper(pop);		
+make_EHelper(lea);		
+
+//arith.c
+make_EHelper(sub);
+
+//logic.c
+make_EHelper(xor);		
+make_EHelper(and);	
 
