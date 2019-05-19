@@ -74,8 +74,6 @@ make_EHelper(movzx) {
 }
 
 make_EHelper(lea) {
-  printf("before lea esp: 0x%x\n", cpu.esp);
   operand_write(id_dest, &id_src->addr);
-  printf("after lea esp: 0x%x\n", cpu.esp);
   print_asm_template2(lea);
 }
