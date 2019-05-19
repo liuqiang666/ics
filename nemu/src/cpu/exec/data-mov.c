@@ -30,8 +30,11 @@ make_EHelper(popa) {
 }
 
 make_EHelper(leave) {
-  TODO();
-
+  //TODO();
+  //4 ESP= 5 EBP
+  rtl_sr(4, &cpu.ebp, 4);
+  // OperandSize=16:bp = pop();OperandSize=32:ebp=pop();
+  rtl_pop(&cpu.ebp);
   print_asm("leave");
 }
 
