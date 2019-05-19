@@ -174,9 +174,7 @@ static inline void rtl_push(const rtlreg_t* src1) {
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
-  printf("before pop dest:0x%x ecx:0x%x\n", *dest, cpu.ecx);
   rtl_lm(dest, &cpu.esp, 4);
-  printf("after pop dest:0x%x ecx:0x%x\n", *dest, cpu.ecx);
   // esp <- esp + 4
   rtl_addi(&cpu.esp, &cpu.esp, 4);
 }
