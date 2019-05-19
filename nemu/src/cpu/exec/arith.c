@@ -74,8 +74,8 @@ make_EHelper(inc) {
   rtl_or(&t0, &t3, &t0);
   rtl_set_CF(&t0);
 
-  rtl_li(&t0, 1);
-  rtl_xor(&t0, &id_dest->val, &t0);
+  //rtl_li(&t0, 1);
+  rtl_xori(&t0, &id_dest->val, 1);
   rtl_not(&t0, &t0);
   rtl_xor(&t1, &id_dest->val, &t2);
   rtl_and(&t0, &t0, &t1);
