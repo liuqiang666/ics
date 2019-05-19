@@ -63,6 +63,7 @@ make_EHelper(cmp) {
 
 make_EHelper(inc) {
   //TODO();
+  printf("before inc eax:0x%x dest:0x%x\n",cpu.eax, id_dest->val);
   rtl_addi(&t2, &id_dest->val, 1);
   rtl_setrelop(RELOP_LTU, &t3, &t2, &id_dest->val);
   operand_write(id_dest, &t2);
@@ -80,6 +81,7 @@ make_EHelper(inc) {
   rtl_and(&t0, &t0, &t1);
   rtl_msb(&t0, &t0, id_dest->width);
   rtl_set_OF(&t0);
+  printf("after inc eax:0x%x dest:0x%x\n",cpu.eax, id_dest->val);
 
   print_asm_template1(inc);
 }
