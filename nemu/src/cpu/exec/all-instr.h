@@ -33,6 +33,7 @@ make_EHelper(inc);
 make_EHelper(imul2);
 make_EHelper(neg);
 make_EHelper(idiv);
+make_EHelper(mul);
 
 //logic.c
 make_EHelper(xor);		
