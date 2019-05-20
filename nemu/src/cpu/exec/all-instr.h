@@ -19,6 +19,7 @@ make_EHelper(pop);
 make_EHelper(lea);		
 make_EHelper(movzx);		
 make_EHelper(leave);		
+make_EHelper(cltd);		
 
 //arith.c
 make_EHelper(sub);
