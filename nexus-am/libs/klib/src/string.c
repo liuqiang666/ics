@@ -1,6 +1,9 @@
 #include "klib.h"
-
+//#include "stdio.h"
+//#include "assert.h"
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
+
+//void* memcpy(void* out, const void* in, size_t n);
 
 size_t strlen(const char *s) {
   assert(s != NULL);
@@ -11,20 +14,19 @@ size_t strlen(const char *s) {
 
 char *strcpy(char* dst,const char* src) {
   assert((dst != NULL) && (src != NULL));
-  int i = 0;
   size_t size = strlen(src);
+  int i = 0;
   //无重叠，从低地址开始复制
   if(dst <= src || dst >= src + size ) {
-    while(src[i] != '\0' && dst[i] != '\0') {
+    i = 0;
+    while(src[i] != '\0') {
       dst[i] = src[i];
       i ++;
     }
     dst[i] = '\0';
   } else {
     //重叠，从高地址开始复制
-    size_t size_d = strlen(dst);
-    int n = size > size_d ? size_d: size;
-	for(i = n - 1; i >= 0;i --)
+	for(i = size; i >= 0;i --)
 	  dst[i] = src[i];
   }
   return dst;
@@ -121,13 +123,37 @@ int memcmp(const void* s1, const void* s2, size_t n){
     return -1;
   if(s2 == NULL)
     return 1;
-  while((n--) && *(char *)s1 == *(char *)s2){
+  while((--n) && *(char *)s1 == *(char *)s2){
 	s1 = (char *)s1 + 1;
     s2 = (char *)s2 + 1;
   }
-  printf("s1:%s\ns2:%s\n", s1, s2);
-  printf("res:%d\n", (*((unsigned char *)s1)) - (*((unsigned char *)s2)));
   return (*((unsigned char *)s1)) - (*((unsigned char *)s2));
 }
 
 #endif
+/*
+char *s[] = {
+	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 
+	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
+	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+	", World!\n",
+	"Hello, World!\n",
+	"#####"
+};
+
+char str1[] = "Hello";
+char str[20];
+
+int main() {
+	assert(strcmp(s[0], s[2]) == 0);
+	assert(strcmp(s[0], s[1]) == -1);
+	assert(strcmp(s[0] + 1, s[1] + 1) == -1);
+	assert(strcmp(s[0] + 2, s[1] + 2) == -1);
+	assert(strcmp(s[0] + 3, s[1] + 3) == -1);
+    
+	assert(strcmp( strcat(strcpy(str, str1), s[3]), s[4]) == 0);
+
+	assert(memcmp(memset(str, '#', 5), s[5], 5) == 0);
+
+	return 0;
+}*/
