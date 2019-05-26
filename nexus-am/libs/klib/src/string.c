@@ -64,12 +64,10 @@ int strcmp(const char* s1, const char* s2) {
     return -1;
   if(s2 == NULL)
     return 1;
-  printf("s1:%s\ns2:%s\n", s1, s2);
   while(*s1 != '\0' && *s2 != '\0' && *s1 == *s2){
 	s1 ++;
     s2 ++;
   }
-  printf("res:%d\n", *s1 - *s2);
   return *s1 - *s2;
 }
 

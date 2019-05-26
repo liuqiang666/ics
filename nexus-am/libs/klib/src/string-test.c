@@ -1,4 +1,6 @@
-#include "trap.h"
+#include "stdio.h"
+#include "string.c"
+
 char *s[] = {
 	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 
 	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
