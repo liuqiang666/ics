@@ -80,8 +80,8 @@ make_EHelper(out) {
 	  break;
 	default:assert(0);
   }
-  print_asm_template2(out);
   printf("out end\n");
+  print_asm_template2(out);
 #if defined(DIFF_TEST)
   difftest_skip_ref();
 #endif
