@@ -13,7 +13,7 @@ size_t video_read(uintptr_t reg, void *buf, size_t size) {
       _VideoInfoReg *info = (_VideoInfoReg *)buf;
 	  //代码只模拟了400x300x32的图形模式
       uint32_t screen = inl(VGA_PORT);
-      info->width = screen >> 16;//100
+      info->width = screen >> 16;//400
       info->height = screen & 0xffff;//300
       return sizeof(_VideoInfoReg);
     }
@@ -26,8 +26,11 @@ size_t video_write(uintptr_t reg, void *buf, size_t size) {
     case _DEVREG_VIDEO_FBCTL: {
       _FBCtlReg *ctl = (_FBCtlReg *)buf;
  	  int i;
-	  int size = screen_width() * screen_height();
-	  for (i = 0; i< size; i++) fb[i] = i;
+	  //int size = screen_width() * screen_height();
+	  int width = screen_width();
+	  int height = screen_height();
+	  for (i = 0; i < ctl->h && ctl->y + i < height; i++) 
+		memcpy(fb + (ctl->y + i) * width + ctl->x, ctl->pixels + i * ctl->w, ctl->w * sizeof(uint32_t));
       if (ctl->sync) {
         // do nothing, hardware syncs.
       }
