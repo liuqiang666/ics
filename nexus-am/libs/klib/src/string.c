@@ -6,7 +6,9 @@
 //void* memcpy(void* out, const void* in, size_t n);
 
 size_t strlen(const char *s) {
-  assert(s != NULL);
+  //assert(s != NULL);
+  if(s == NULL)
+	return 0;
   size_t size = 0;
   while(s[size] != '\0') size ++;
   return size;
