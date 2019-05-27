@@ -44,7 +44,6 @@ make_EHelper(iret) {
 
 make_EHelper(in) {
   //TODO();
-  printf("in begin\n");
   switch(id_dest->width) {
 	case 1:
 	  rtl_li(&t0, pio_read_b(id_src->val));
@@ -59,7 +58,6 @@ make_EHelper(in) {
   }
   operand_write(id_dest, &t0);
   print_asm_template2(in);
-  printf("in end\n");
 #if defined(DIFF_TEST)
   difftest_skip_ref();
 #endif
@@ -67,7 +65,6 @@ make_EHelper(in) {
 
 make_EHelper(out) {
   //TODO();
-  printf("out begin\n");
   switch(id_src->width) {
 	case 1:
 	  pio_write_b(id_dest->val, id_src->val);
@@ -80,7 +77,6 @@ make_EHelper(out) {
 	  break;
 	default:assert(0);
   }
-  printf("out end\n");
   print_asm_template2(out);
 #if defined(DIFF_TEST)
   difftest_skip_ref();
