@@ -89,6 +89,18 @@ make_EHelper(shr) {
   print_asm_template2(shr);
 }
 
+make_EHelper(rol) {
+  //TODO();
+  rtl_rol(&t0, &id_dest->val, &id_src->val); 
+  operand_write(id_dest, &t0);
+  
+  // unnecessary to update CF and OF in NEMU
+  //rtl_update_ZFSF(&t0, id_dest->width);
+  
+  print_asm_template2(rol);
+}
+
+
 make_EHelper(setcc) {
   uint32_t cc = decoding.opcode & 0xf;
 
