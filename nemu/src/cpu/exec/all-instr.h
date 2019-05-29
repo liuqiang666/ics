@@ -20,6 +20,7 @@ make_EHelper(jmp_rm);
 make_EHelper(push);	
 make_EHelper(pusha);	
 make_EHelper(pop);		
+make_EHelper(popa);		
 make_EHelper(lea);		
 make_EHelper(movzx);		
 make_EHelper(movsx);		

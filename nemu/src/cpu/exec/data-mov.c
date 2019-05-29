@@ -35,7 +35,15 @@ make_EHelper(pusha) {
 }
 
 make_EHelper(popa) {
-  TODO();
+  //TODO();
+  rtl_pop(&cpu.edi);
+  rtl_pop(&cpu.esi);
+  rtl_pop(&cpu.ebp);
+  rtl_pop(&t0);//skip esp throwaway
+  rtl_pop(&cpu.ebx);
+  rtl_pop(&cpu.edx);
+  rtl_pop(&cpu.ecx);
+  rtl_pop(&cpu.eax);
 
   print_asm("popa");
 }
@@ -43,7 +51,7 @@ make_EHelper(popa) {
 make_EHelper(leave) {
   //TODO();
   //4 ESP= 5 EBP
-  rtl_sr(4, &cpu.ebp, 4);
+  rtl_sr(R_ESP, &cpu.ebp, 4);
   // OperandSize=16:bp = pop();OperandSize=32:ebp=pop();
   rtl_pop(&cpu.ebp);
   print_asm("leave");
