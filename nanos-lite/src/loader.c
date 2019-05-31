@@ -2,9 +2,17 @@
 
 #define DEFAULT_ENTRY 0x4000000
 
+/* read `len' bytes starting from `offset' of ramdisk into `buf' */
+extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
+/*return ramdisk size ,byte*/
+extern size_t get_ramdisk_size();
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
-  return DEFAULT_ENTRY;
+  //TODO();
+  size_t size = get_ramdisk_size();
+  void *buff = NULL;
+  ramdisk_read(buff, 0, size);
+  return (uintptr_t)DEFAULT_ENTRY;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
