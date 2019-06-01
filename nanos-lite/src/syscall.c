@@ -17,8 +17,8 @@ size_t sys_write(int fd, void *buf, size_t len) {
 	for(int i = 0;i < len; i++)
 	  _putc(b[i]);
     return len;
-  } else 
-    return 0;
+  }  
+  return 0;
 }
 
 _Context* do_syscall(_Context *c) {
@@ -31,7 +31,7 @@ _Context* do_syscall(_Context *c) {
   switch (a[0]) {
     case SYS_yield: c->GPR1 = sys_yield();break;
     case SYS_exit:Log("system exit."); sys_exit(a[1]);break;
-    case SYS_write: Log("system write.");c->GPR1 = sys_write(a[1], (void *)a[2], a[3]);break;
+    case SYS_write: Log("system write len %d.", a[3]);c->GPR1 = sys_write(a[1], (void *)a[2], a[3]);break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
   
