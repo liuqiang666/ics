@@ -17,8 +17,8 @@ size_t sys_write(int fd, void *buf, size_t len) {
 	for(int i = 0;i < len; i++)
 	  _putc(b[i]);
     return len;
-  }
-  return 0;
+  } else 
+    return 0;
 }
 
 _Context* do_syscall(_Context *c) {
