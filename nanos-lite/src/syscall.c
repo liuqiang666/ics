@@ -3,12 +3,10 @@
 
 
 uintptr_t sys_yield() {
-  _yield();
+  //_yield();
+  Log("syscall yield.");
   return 0;
 }
-
-
-
 
 _Context* do_syscall(_Context *c) {
   uintptr_t a[4];
@@ -21,6 +19,6 @@ _Context* do_syscall(_Context *c) {
     case SYS_yield: c->GPR1 = sys_yield();break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
-
+  
   return NULL;
 }
