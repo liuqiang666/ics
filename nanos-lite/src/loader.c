@@ -1,4 +1,5 @@
 #include "proc.h"
+#include "common.h"
 
 #define DEFAULT_ENTRY 0x4000000
 
@@ -10,7 +11,7 @@ extern size_t get_ramdisk_size();
 static uintptr_t loader(PCB *pcb, const char *filename) {
   //TODO();
   size_t size = get_ramdisk_size();
-  ramdisk_read((void*)DEFAULT_ENTRY, 0, size);
+  ramdisk_read((void *)DEFAULT_ENTRY, 0, size);
   return (uintptr_t)DEFAULT_ENTRY;
 }
 
