@@ -13,7 +13,7 @@ void sys_exit(int code) {
 
 size_t sys_write(int fd, void *buf, size_t len) {
   if(fd == 1 || fd == 2) {
-    char *b = buf;
+    char *b = (char *)buf;
 	for(int i = 0;i < len; i++)
 	  _putc(b[i]);
     return len;
