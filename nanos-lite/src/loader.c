@@ -8,10 +8,21 @@ extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 /*return ramdisk size ,byte*/
 extern size_t get_ramdisk_size();
 
+int fs_open(const char *pathname, int flags, int mode);
+ssize_t fs_read(int fd, void *buf, size_t len);
+size_t fs_filesz(int fd);
+int fs_close(int fd);
+
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
   //TODO();
-  size_t size = get_ramdisk_size();
-  ramdisk_read((void *)DEFAULT_ENTRY, 0, size);
+  //size_t size = get_ramdisk_size();
+  //ramdisk_read((void *)DEFAULT_ENTRY, 0, size);
+  int fd = fs_open(filename, 0, 0);
+  size_t bytes = fs_filesz(fd);
+  Log("Load %d %s, size: %d.", fd, filename, bytes);
+  fs_read(fd, (void *)DEFAULT_ENTRY, bytes);
+  fs_close(fd);
   return (uintptr_t)DEFAULT_ENTRY;
 }
 
