@@ -1,5 +1,7 @@
 #include "common.h"
 #include "syscall.h"
+#include "fs.h"
+#include "proc.h"
 
 int fs_open(const char *pathname, int flags, int mode);
 ssize_t fs_read(int fd, void *buf, size_t len);
@@ -7,14 +9,11 @@ ssize_t fs_write(int fd, const void *buf, size_t len);
 off_t fs_lseek(int fd, off_t offset, int whence);
 size_t fs_filesz(int fd);
 int fs_close(int fd);
+void naive_uload(PCB *pcb, const char *filename);
 
 uintptr_t sys_yield() {
   _yield();
   return 0;
-}
-
-void sys_exit(int code) {
-  _halt(code);
 }
 
 size_t sys_write(int fd, void *buf, size_t len) {
@@ -50,6 +49,15 @@ int sys_close(int fd) {
   return fs_close(fd);
 }
 
+int sys_execve(const char *filename, char *const argv[], char *const envp[]){
+ naive_uload(NULL, filename);
+ return 0; 
+}
+
+void sys_exit(int code) {
+  //_halt(code);
+  sys_execve("/bin/init", NULL, NULL);
+}
 
 _Context* do_syscall(_Context *c) {
   uintptr_t a[4];
@@ -67,6 +75,7 @@ _Context* do_syscall(_Context *c) {
     case SYS_open: c->GPR1 = sys_open((char *)a[1], a[2], a[3]);break;
     case SYS_lseek: c->GPR1 = sys_lseek(a[1], a[2], a[3]);break;
     case SYS_close: c->GPR1 = sys_close(a[1]);break;
+    case SYS_execve: c->GPR1 = sys_execve((char *)a[1], (char *const*)a[2], (char *const*)a[3]);break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
   

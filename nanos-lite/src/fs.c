@@ -19,7 +19,7 @@ typedef struct {
   WriteFn write;
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB, FD_DISPINFO, FD_EVENTS};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB, FD_DISPINFO, FD_EVENTS, FD_TTY};
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
   panic("should not reach here");
@@ -39,6 +39,7 @@ static Finfo file_table[] __attribute__((used)) = {
   {"/dev/fb", 0, 0, 0, invalid_read, fb_write},
   {"/proc/dispinfo", 128, 0, 0, dispinfo_read, invalid_write},
   {"/dev/events", 0, 0, 0, events_read, invalid_write},
+  {"/dev/tty", 0, 0, 0, invalid_read, serial_write},
 #include "files.h"
 };
 
@@ -92,7 +93,8 @@ ssize_t fs_read(int fd, void *buf, size_t len) {
 
 ssize_t fs_write(int fd, const void *buf, size_t len) {
   size_t fs_size = fs_filesz(fd);
-  if(fd != FD_STDOUT && fd != FD_STDERR)
+  //serial_write does't need consider  offset
+  if(fd != FD_STDOUT && fd != FD_STDERR && fd != FD_TTY)
     if(file_table[fd].open_offset + len > fs_size)
 	  len = fs_size - file_table[fd].open_offset;
   if(file_table[fd].write == NULL){// 普通文件  
